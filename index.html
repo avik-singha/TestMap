@@ -1,0 +1,55 @@
+<html>
+	<head>
+		<title>Google Map Test</title>
+		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEayxqyQY9tZkALFf4-WROYTWSIBJ7NkA&libraries=places"></script>
+		<style>
+			#map {
+				height: 100%;
+				width: 100%;
+				float: left;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="map"></div>
+		<script type="text/javascript">
+			function initialize() {
+				var kolkata = new google.maps.LatLng(22.5726, 88.3639);
+
+				var map = new google.maps.Map(document.getElementById('map'), {
+					center: kolkata,
+					zoom: 15,
+					scrollwheel: false
+				});
+
+				// Specify location, radius and place types for your Places API search.
+				var request = {
+					location: kolkata,
+					radius: '5000',
+					types: ["police"]
+				};
+
+				// Create the PlaceService and send the request.
+				// Handle the callback with an anonymous function.
+				var service = new google.maps.places.PlacesService(map);
+				service.nearbySearch(request, function(results, status) {
+					if (status == google.maps.places.PlacesServiceStatus.OK) {
+						for (var i = 0; i < results.length; i++) {
+							var place = results[i];
+							// If the request succeeds, draw the place location on
+							// the map as a marker, and register an event to handle a
+							// click on the marker.
+							var marker = new google.maps.Marker({
+								map: map,
+								position: place.geometry.location
+							});
+						}
+					}
+				});
+			}
+
+			// Run the initialize function when the window has finished loading.
+			google.maps.event.addDomListener(window, 'load', initialize);
+		</script>
+	</body>
+</html>
